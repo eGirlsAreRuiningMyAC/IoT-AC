@@ -8,7 +8,9 @@ bp = Blueprint('environment', __name__, url_prefix='/air')
 @bp.route('/temperature', methods=['POST'])
 @login_required
 def set_air_temperature():
-    airTemperature = request.form['airTemperature']
+    json = request.get_json(force=True) 
+    airTemperature = json['value']
+  
     if not airTemperature:
         return jsonify({'status': 'Air temperature is required.'}), 400
 
@@ -20,12 +22,12 @@ def set_air_temperature():
     db.commit()
 
     check = get_db().execute(
-        'SELECT timestamp, value FROM temperature ORDER BY timestamp DESC'
+        'SELECT timestamp, value FROM airTemperature ORDER BY timestamp DESC'
     ).fetchone()
 
     return jsonify({
         'status': 'Air emperature succesfully recorded',
-        'airTemperature': check['value']
+        'value': check['value']
         }), 200
 
 
@@ -35,17 +37,21 @@ def get_air_temperature():
     airTemperature = get_db().execute(
         'SELECT timestamp, value FROM airTemperature ORDER BY timestamp DESC'
     ).fetchone()
+    if airTemperature is None:
+        return {'status': 'Please set a value for air temperature'}, 200
     return jsonify({
         'status': 'Air temperature succesfully retrieved',
-        'airTemperature': airTemperature['value']
+        'value': airTemperature['value']
         }), 200
 
 
-         
+
 @bp.route('/humidity', methods=['POST'])
 @login_required
 def set_air_humidity():
-    humidity = request.form['humidity']
+    json = request.get_json(force=True) 
+    humidity = json['value']
+
     if not humidity:
         return jsonify({'status': 'Air humidity is required.'}), 400
 
@@ -61,17 +67,19 @@ def set_air_humidity():
     ).fetchone()
     return jsonify({
         'status': 'Air humidity succesfully recorded',
-        'airHumidity': check['value']
+        'value': check['value']
         }), 200
 
 
 
 @bp.route('/humidity', methods=['GET'])
 def get_air_humidity():
-    check = get_db().execute(
+    airHumidity = get_db().execute(
         'SELECT timestamp, value FROM airHumidity ORDER BY timestamp DESC'
     ).fetchone()
+    if airHumidity is None:
+        return {'status': 'Please set a value for air humidity'}, 200
     return jsonify({
         'status': 'Air humidity succesfully retrieved',
-        'airHumidity': check['value']
+        'value': airHumidity['value']
         }), 200

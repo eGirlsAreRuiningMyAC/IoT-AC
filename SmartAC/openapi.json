@@ -1,0 +1,1055 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "smartAC",
+    "description": "OpenAPI Specification for SmartAC",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000"
+    }
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "description": "Endpoint for login existing user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User successfully logged in",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Login failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "description": "Endpoint for logout current user",
+        "responses": {
+          "200": {
+            "description": "User successfully logged out",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "description": "Endpoint for registering new user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "New user has successfully registered",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required arguments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Authentication failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/statistics": {
+      "get": {
+        "description": "Get statistics of device usage",
+        "responses": {
+          "200": {
+            "description": "Received statistics for device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatisticsBodyResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status": {
+      "get": {
+        "description": "Get status of device",
+        "responses": {
+          "200": {
+            "description": "Received status of device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceStatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/air/temperature": {
+      "get": {
+        "description": "Get air temperature displayed by device",
+        "responses": {
+          "200": {
+            "description": "Received air temperature displayed by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Set air temperature to be displayed by device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Retrieved air temperature to be displayed by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing air temperature value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/air/humidity": {
+      "get": {
+        "description": "Get air humidity displayed by device",
+        "responses": {
+          "200": {
+            "description": "Added and received air humidity displayed by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Set air humidity to be displayed by device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added and received air humidity to be displayed by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing air humidity value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/preference": {
+      "get": {
+        "description": "Get all preferences added for this device by the current logged user",
+        "responses": {
+          "200": {
+            "description": "Received all preferences for device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllPreferencesResponseBody"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add new preference for device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferenceRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added and received new preference",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing preference value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete preference from device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteIdRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deleted preference from device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error in missing or wrong arguments while deleting the preference",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/schedule": {
+      "get": {
+        "description": "Get all schedules added for this device by the current logged user",
+        "responses": {
+          "200": {
+            "description": "Received all schedules for device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllSchedulesResponseBody"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Add new schedule for device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added and received new schedule",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error in missing or wrong arguments while deleting the schedule",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Delete schedule from device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteIdRequestBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Deleted schedule from device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error in missing or wrong arguments while deleting the schedule",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/temperature": {
+      "get": {
+        "description": "Get temperature displayed by device",
+        "responses": {
+          "200": {
+            "description": "Received temperature displayed by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Set temperature to be displayed by device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added and received temperature to be displayed by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing temperature value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/mode": {
+      "get": {
+        "description": "Get mode used by device",
+        "responses": {
+          "200": {
+            "description": "Received mode used by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Set mode to be used by device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added and received mode to be used by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or wrong mode value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/fanSpeed": {
+      "get": {
+        "description": "Get fan speed used by device",
+        "responses": {
+          "200": {
+            "description": "Received fan speed used by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Set fan speed to be used by device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added and received fan speed to be used by device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or wrong fan speed value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/health": {
+      "get": {
+        "description": "Get health score for device",
+        "responses": {
+          "200": {
+            "description": "Received health score for device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Set health score for device",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Added and received health score of this device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or wrong health score value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/power": {
+      "get": {
+        "description": "Check if device is on or off",
+        "responses": {
+          "200": {
+            "description": "Received power value of device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Turn the device on or off",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The device has been turned on or off",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid value or the device is in maintenance",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/light": {
+      "get": {
+        "description": "Check if light is ON or OFF for device",
+        "responses": {
+          "200": {
+            "description": "Received light value for device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Turn the light on or off",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The light is now on or off",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong light value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/sound": {
+      "get": {
+        "description": "Check if sound is ON or OFF for device",
+        "responses": {
+          "200": {
+            "description": "Received sound value for device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Turn the sound on or off",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The sound is now on or off",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong sound value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settings/cleaning": {
+      "get": {
+        "description": "Check if the device is in cleaning or not",
+        "responses": {
+          "200": {
+            "description": "Received cleaning state of device",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusValueResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Turn the sound on or off",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ValueRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The cleaning state is changed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong or missing cleaning value",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatusResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginBody": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "StatusResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "StatusValueResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "ValueRequest": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterBody": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        }
+      },
+      "DeviceStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string"
+              },
+              "light": {
+                "type": "string"
+              },
+              "fanSpeed": {
+                "type": "string"
+              },
+              "sound": {
+                "type": "string"
+              },
+              "temperature": {
+                "type": "string"
+              },
+              "airTemperature": {
+                "type": "string"
+              },
+              "airHumidity": {
+                "type": "string"
+              },
+              "powerState": {
+                "type": "string"
+              },
+              "healthScore": {
+                "type": "integer"
+              },
+              "cleaning": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "string"
+                  },
+                  "cleaning_date": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "StatisticsBodyResponse": {
+        "type": "object",
+        "properties": {
+          "statistics": {
+            "type": "object",
+            "properties": {
+              "mode": {
+                "type": "string"
+              },
+              "light": {
+                "type": "string"
+              },
+              "preference": {
+                "type": "string"
+              },
+              "sound": {
+                "type": "string"
+              },
+              "temperature": {
+                "type": "string"
+              }
+            }
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "DeleteIdRequestBody": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          }
+        }
+      },
+      "PreferenceRequestBody": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string"
+          },
+          "light": {
+            "type": "string"
+          },
+          "fanSpeed": {
+            "type": "string"
+          },
+          "sound": {
+            "type": "string"
+          },
+          "temperature": {
+            "type": "string"
+          }
+        }
+      },
+      "ScheduleRequestBody": {
+        "type": "object",
+        "properties": {
+          "turnOnTime": {
+            "type": "string"
+          },
+          "turnOffTime": {
+            "type": "string"
+          },
+          "preferenceId": {
+            "type": "integer"
+          }
+        }
+      },
+      "AllSchedulesResponseBody": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "preferenceId": {
+                  "type": "integer"
+                },
+                "turnOnTime": {
+                  "type": "string"
+                },
+                "turnOffTime": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "AllPreferencesResponseBody": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "mode": {
+                  "type": "string"
+                },
+                "light": {
+                  "type": "string"
+                },
+                "fanSpeed": {
+                  "type": "string"
+                },
+                "sound": {
+                  "type": "string"
+                },
+                "temperature": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

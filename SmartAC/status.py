@@ -8,7 +8,8 @@ def get_status():
     ).fetchone()
 
     if airHumidity is None:
-        return {'status': 'Please set a value for air humidity'}
+        return {'status': 'Please set a value for air humidity'}, 200
+
 
     powerState  = get_db().execute(
         'SELECT timestamp, value'
@@ -17,7 +18,7 @@ def get_status():
     ).fetchone()
 
     if powerState is None:
-        return {'status': 'Please set a value for power (ON or OFF)'}
+        return {'status': 'Please set a value for power (ON or OFF)'}, 200
 
 
 
@@ -28,7 +29,7 @@ def get_status():
     ).fetchone()
 
     if airTemperature is None:
-        return {'status': 'Please set a value for air temperature'}
+        return {'status': 'Please set a value for air temperature'}, 200
    
 
     temperature = get_db().execute(
@@ -38,7 +39,8 @@ def get_status():
     ).fetchone()
 
     if temperature is None:
-        return {'status': 'Please set a value for temperature'}
+        return {'status': 'Please set a value for temperature'}, 200
+
 
 
     mode = get_db().execute(
@@ -48,9 +50,10 @@ def get_status():
     ).fetchone()
 
     if mode is None:
-        return {'status': 'Please set a value for mode (auto, cool, dry, fan, heat, eco)'}
+        return {'status': 'Please set a value for mode (auto, cool, dry, fan, heat, eco)'}, 200
 
    
+
     fanSpeed = get_db().execute(
         'SELECT timestamp, value'
         ' FROM fanSpeed'
@@ -58,7 +61,8 @@ def get_status():
     ).fetchone()
 
     if fanSpeed is None:
-        return {'status': 'Please set a value for fan speed (low, medium, high)'}
+        return {'status': 'Please set a value for fan speed (low, medium, high)'}, 200
+
 
 
     healthScore = get_db().execute(
@@ -68,7 +72,7 @@ def get_status():
     ).fetchone()
 
     if healthScore is None:
-        return {'status': 'Please set a score for device health'}
+        return {'status': 'Please set a score for device health'}, 200
 
 
     cleaning = get_db().execute(
@@ -106,4 +110,4 @@ def get_status():
             'light': light['value'],
             'sound': sound['value']
         }
-    }
+    }, 200

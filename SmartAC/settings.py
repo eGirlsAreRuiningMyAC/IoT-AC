@@ -7,9 +7,10 @@ bp = Blueprint('settings', __name__, url_prefix='/settings')
 @bp.route('/temperature', methods=['POST'])
 @login_required
 def set_ac_temperature():
-    temperature = request.form['temperature']
+    json = request.get_json(force=True) 
+    temperature = json['value']
     if not temperature:
-        return jsonify({'status': 'Temperature is required.'}), 403
+        return jsonify({'status': 'Temperature is required.'}), 400
 
     db = get_db()
     db.execute(
@@ -23,7 +24,7 @@ def set_ac_temperature():
     ).fetchone()
     return jsonify({
         'status': 'Temperature succesfully recorded',
-        'temperature': check['value']
+        'value': check['value']
          }), 200
 
 
@@ -33,10 +34,13 @@ def get_ac_temperature():
         'SELECT id, timestamp, value FROM temperature ORDER BY timestamp DESC'
     ).fetchone()
     if check is None:
-        return {'status': 'Please set a value for temperature'}
+        return jsonify({
+        'status': 'Please set a value for temperature',
+        'value': "None"
+        }), 200
     return jsonify({
         'status': 'Temperature succesfully retrieved',
-        'temperature': check['value']
+        'value': check['value']
         }), 200
 
 
@@ -44,7 +48,8 @@ def get_ac_temperature():
 @bp.route('/mode', methods=['POST'])
 @login_required
 def set_ac_mode():
-    mode = request.form['mode']
+    json = request.get_json(force=True) 
+    mode = json['value']
     if not mode:
         return jsonify({'status': 'Mode is required.'}), 400
     if mode.upper() not in ["AUTO", "COOL", "DRY", "FAN", "HEAT", "ECO"]:
@@ -62,7 +67,7 @@ def set_ac_mode():
     ).fetchone()
     return jsonify({
         'status': 'Mode succesfully recorded',
-        'mode': check['type']
+        'value': check['type']
         }), 200
 
 
@@ -73,7 +78,7 @@ def get_ac_mode():
     ).fetchone()
     return jsonify({
         'status': 'Mode succesfully retrieved',
-        'mode': check['type']
+        'value': check['type']
         }), 200
 
 
@@ -81,7 +86,8 @@ def get_ac_mode():
 @bp.route('/fanSpeed', methods=['POST'])
 @login_required
 def set_ac_fan_speed():
-    fanSpeed = request.form['fanSpeed']
+    json = request.get_json(force=True) 
+    fanSpeed = json['value']
     if not fanSpeed:
         return jsonify({'status': 'Fan speed is required.'}), 400
     if fanSpeed.upper() not in ["LOW", "MEDIUM", "HIGH"]:
@@ -99,7 +105,7 @@ def set_ac_fan_speed():
     ).fetchone()
     return jsonify({
         'status': 'Fan speed succesfully recorded',
-        'fanSpeed': check['value']
+        'value': check['value']
         }), 200
 
 
@@ -110,7 +116,7 @@ def get_ac_fan_speed():
     ).fetchone()
     return jsonify({
         'status': 'Fan speed succesfully retrieved',
-        'fanSpeed': check['value']
+        'value': check['value']
         }), 200
 
 
@@ -121,7 +127,7 @@ def get_ac_health_score():
         'SELECT id, timestamp, value FROM health ORDER BY timestamp DESC'
     ).fetchone()
     if check is None:
-        return {'status': 'No health score for this device'}
+        return {'status': 'No health score for this device'}, 200
     return jsonify({
         'status': 'Health succesfully retrieved',
         'value': check['value']
@@ -131,7 +137,8 @@ def get_ac_health_score():
 @bp.route('/health', methods=['POST'])
 @login_required
 def set_ac_health_score():
-    healthScore = request.form['healthScore']
+    json = request.get_json(force=True) 
+    healthScore = json['value']
     if not healthScore:
         return jsonify({'status': 'Health score is required.'}), 400
 
@@ -194,7 +201,8 @@ def set_ac_power():
     if checkCleaning["value"]=='START':
         return jsonify({'status': 'The device is currently being cleaned and cannot be turned on or off'}), 400
 
-    power = request.form['power']
+    json = request.get_json(force=True) 
+    power = json['value']
     if not power:
         return jsonify({'status': 'Power value is required.'}), 400
 
@@ -218,9 +226,9 @@ def set_ac_power():
 
     if isAlreadyTurnedOn==setTurnOn:
         if isAlreadyTurnedOn:
-            return {'status': 'The air conditioning is already turned on'}
+            return {'status': 'The air conditioning is already turned on'}, 200
         else:
-            return {'status': 'The air conditioning is already turned off'}
+            return {'status': 'The air conditioning is already turned off'}, 200
     else:
         db.execute(
             'INSERT INTO powerStatus (value) VALUES (?)',
@@ -249,7 +257,8 @@ def get_ac_light():
 @bp.route('/light', methods=['POST'])
 @login_required
 def set_ac_light():
-    light = request.form['light']
+    json = request.get_json(force=True) 
+    light = json['value']
     if not light:
         return jsonify({'status': 'Lght value is required.'}), 400
     if light.upper() not in ["ON", "OFF"]:
@@ -265,19 +274,19 @@ def set_ac_light():
 
     if isAlreadyTurnedOn==setTurnOn:
         if isAlreadyTurnedOn:
-            return jsonify({'status': 'The light is already turned on.'}), 400
+            return jsonify({'status': 'The light is already turned on.'}), 200
         else:
-            return jsonify({'status': 'The light is already turned off.'}), 400
+            return jsonify({'status': 'The light is already turned off.'}), 200
     else:
         db.execute(
             'INSERT INTO light (value) VALUES (?)',
             (light.upper(),)
         )
         db.commit()
-        return jsonify({
-            'status': 'Light value succesfully recorded',
-            'value': light.upper()
-        }), 200
+        if setTurnOn:
+            return jsonify({'status': 'Light is not on'}), 200
+        else:
+            return jsonify({'status': 'Light is not off'}), 200
 
 
 
@@ -287,7 +296,7 @@ def get_ac_sound():
         'SELECT id, timestamp, value FROM sound ORDER BY timestamp DESC'
     ).fetchone()
     return jsonify({
-        'status': 'Light value succesfully retrieved',
+        'status': 'Sound value succesfully retrieved',
         'value': check['value']
         }), 200
 
@@ -295,7 +304,8 @@ def get_ac_sound():
 @bp.route('/sound', methods=['POST'])
 @login_required
 def set_ac_sound():
-    sound = request.form['sound']
+    json = request.get_json(force=True) 
+    sound = json['value']
     if not sound:
         return jsonify({'status': 'Sound value is required.'}), 400
     if sound.upper() not in ["ON", "OFF"]:
@@ -311,19 +321,21 @@ def set_ac_sound():
 
     if isAlreadyTurnedOn==setTurnOn:
         if isAlreadyTurnedOn:
-            return jsonify({'status': 'The sound is already turned on.'}), 400
+            return jsonify({'status': 'The sound is already turned on.'}), 200
         else:
-            return jsonify({'status': 'The sound is already turned off.'}), 400
+            return jsonify({'status': 'The sound is already turned off.'}), 200
     else:
         db.execute(
             'INSERT INTO sound (value) VALUES (?)',
             (sound.upper(),)
         )
         db.commit()
-        return jsonify({
-            'status': 'Sound value succesfully recorded',
-            'value': sound.upper()
-        }), 200
+        if setTurnOn:
+            return jsonify({'status': 'Sound is not on'}), 200
+        else:
+            return jsonify({'status': 'Sound is not off'}), 200
+
+
 
 
 @bp.route('/cleaning', methods=['GET'])
@@ -340,7 +352,8 @@ def get_ac_cleaning_status():
 @bp.route('/cleaning', methods=['POST'])
 @login_required
 def set_ac_cleaning_status():
-    cleaning = request.form['cleaning']
+    json = request.get_json(force=True) 
+    cleaning = json['cleaning']
     if not cleaning:
         return jsonify({'status': 'Cleaning value is required.'}), 400
     if cleaning.upper() not in ["START", "STOP"]:
@@ -356,7 +369,7 @@ def set_ac_cleaning_status():
 
     if isInCleaning:
         if startCleaning:
-            return jsonify({'status': 'The device is currently being cleaned.'})
+            return jsonify({'status': 'The device is currently being cleaned.'}), 200
         else:
             db.execute(
                 'INSERT INTO cleaning (value) VALUES (?)',
@@ -369,14 +382,10 @@ def set_ac_cleaning_status():
             )
             db.commit()
             
-            
-            return jsonify({
-                'status': 'Cleaning value succesfully recorded',
-                'value': cleaning.upper()
-            }), 200
+            return jsonify({'status': 'Cleaning value succesfully recorded'}), 200
     else:
         if not startCleaning:
-            return jsonify({'status': 'The device is currently not being cleaned.'})
+            return jsonify({'status': 'The device is currently not being cleaned.'}), 200
         else:
             db.execute(
                 'INSERT INTO cleaning (value) VALUES (?)',
@@ -388,8 +397,5 @@ def set_ac_cleaning_status():
                 ("OFF",)
             )
             db.commit()
-            return jsonify({
-                'status': 'Cleaning value succesfully recorded',
-                'value': cleaning.upper()
-            }), 200
+            return jsonify({'status': 'Cleaning value succesfully recorded'}), 200
         

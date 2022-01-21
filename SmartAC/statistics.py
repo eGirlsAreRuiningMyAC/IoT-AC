@@ -55,23 +55,13 @@ def get_statistics():
         (userId,)
     ).fetchone()
 
-    if temperature is None or temperature["avgValue"] is None:
-        temperatureValue = "No temperature for this device yet"
-    else:
-        temperatureValue = temperature["avgValue"]
-
-    if preference is None:
-        preferenceValue = "No preference used for this device yet"
-    else:
-        preferenceValue = preference["preference_id"]
-
     return jsonify({
         'status': 'Statistics succesfully retrieved',
         'statistics': {
-            'temperature': temperatureValue,
+            'temperature': temperature["avgValue"],
             'light': light['value'],
             'sound': sound['value'],
             'mode': mode['type'],
-            'preference': preferenceValue
+            'preference': preference["preference_id"]
         }
     }), 200
