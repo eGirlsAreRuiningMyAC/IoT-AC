@@ -12,6 +12,10 @@ def set_ac_temperature():
     if not temperature:
         return jsonify({'status': 'Temperature is required.'}), 400
 
+    if temperature <16 or temperature >28:
+        return jsonify({'status': 'Temperature must be between 16 and 28'}), 400
+
+
     db = get_db()
     db.execute(
         'INSERT INTO temperature (value) VALUES (?)',

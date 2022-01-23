@@ -1,7 +1,8 @@
 from database import get_db
 
 def get_status():
-    airHumidity = get_db().execute(
+    db = get_db()
+    airHumidity = db.execute(
         'SELECT timestamp, value'
         ' FROM airHumidity'
         ' ORDER BY timestamp DESC'
@@ -11,7 +12,7 @@ def get_status():
         return {'status': 'Please set a value for air humidity'}, 200
 
 
-    powerState  = get_db().execute(
+    powerState  = db.execute(
         'SELECT timestamp, value'
         ' FROM powerStatus'
         ' ORDER BY timestamp DESC'
@@ -22,7 +23,7 @@ def get_status():
 
 
 
-    airTemperature = get_db().execute(
+    airTemperature = db.execute(
         'SELECT timestamp, value'
         ' FROM airTemperature'
         ' ORDER BY timestamp DESC'
@@ -32,7 +33,7 @@ def get_status():
         return {'status': 'Please set a value for air temperature'}, 200
    
 
-    temperature = get_db().execute(
+    temperature = db.execute(
         'SELECT timestamp, value'
         ' FROM temperature'
         ' ORDER BY timestamp DESC'
@@ -43,7 +44,7 @@ def get_status():
 
 
 
-    mode = get_db().execute(
+    mode = db.execute(
         'SELECT timestamp, type'
         ' FROM mode'
         ' ORDER BY timestamp DESC'
@@ -54,7 +55,7 @@ def get_status():
 
    
 
-    fanSpeed = get_db().execute(
+    fanSpeed = db.execute(
         'SELECT timestamp, value'
         ' FROM fanSpeed'
         ' ORDER BY timestamp DESC'
@@ -65,7 +66,7 @@ def get_status():
 
 
 
-    healthScore = get_db().execute(
+    healthScore = db.execute(
         'SELECT timestamp, value'
         ' FROM health'
         ' ORDER BY timestamp DESC'
@@ -75,19 +76,19 @@ def get_status():
         return {'status': 'Please set a score for device health'}, 200
 
 
-    cleaning = get_db().execute(
-        'SELECT timestamp, value'
+    cleaning = db.execute(
+        'SELECT cleaning_date, value'
         ' FROM cleaning'
-        ' ORDER BY timestamp DESC'
+        ' ORDER BY cleaning_date DESC'
     ).fetchone()
 
-    light = get_db().execute(
+    light = db.execute(
         'SELECT timestamp, value'
         ' FROM light'
         ' ORDER BY timestamp DESC'
     ).fetchone()
 
-    sound = get_db().execute(
+    sound = db.execute(
         'SELECT timestamp, value'
         ' FROM sound'
         ' ORDER BY timestamp DESC'
@@ -110,4 +111,4 @@ def get_status():
             'light': light['value'],
             'sound': sound['value']
         }
-    }, 200
+    }
