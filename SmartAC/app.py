@@ -8,13 +8,15 @@ import time
 
 import database
 import auth
+import environment_api
 import environment
 import status_api
 import status
 import settings
-import preference
-import schedule
-import statistics
+import settings_api
+import preference_api
+import schedule_api
+import statistics_api
 
 from weather_api_publisher import run_weather_mqtt_client
 
@@ -36,12 +38,12 @@ def create_app():
 
     database.init_app(app)
     app.register_blueprint(auth.bp)
-    app.register_blueprint(environment.bp)
-    app.register_blueprint(settings.bp)
-    app.register_blueprint(preference.bp)
-    app.register_blueprint(schedule.bp)
+    app.register_blueprint(environment_api.bp)
+    app.register_blueprint(settings_api.bp)
+    app.register_blueprint(preference_api.bp)
+    app.register_blueprint(schedule_api.bp)
     app.register_blueprint(status_api.bp)
-    app.register_blueprint(statistics.bp)
+    app.register_blueprint(statistics_api.bp)
     return app
 
 
@@ -90,8 +92,10 @@ def mqtt_publish_status_thread():
     while True:
         time.sleep(30)
         with app.app_context():
-            message = json.dumps(status.get_status(), default=str)
-        mqtt.publish('smartAC/status', message)
+            statusMessage = json.dumps(status.get_status(), default=str)
+
+        mqtt.publish('smartAC/status', statusMessage)
+    
     
 
 @mqtt.on_message()

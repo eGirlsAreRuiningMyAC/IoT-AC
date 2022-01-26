@@ -9,7 +9,7 @@ def get_status():
     ).fetchone()
 
     if airHumidity is None:
-        return {'status': 'Please set a value for air humidity'}, 200
+        return {'status': 'Please set a value for air humidity'}
 
 
     powerState  = db.execute(
@@ -19,7 +19,7 @@ def get_status():
     ).fetchone()
 
     if powerState is None:
-        return {'status': 'Please set a value for power (ON or OFF)'}, 200
+        return {'status': 'Please set a value for power (ON or OFF)'}
 
 
 
@@ -30,7 +30,7 @@ def get_status():
     ).fetchone()
 
     if airTemperature is None:
-        return {'status': 'Please set a value for air temperature'}, 200
+        return {'status': 'Please set a value for air temperature'}
    
 
     temperature = db.execute(
@@ -40,7 +40,7 @@ def get_status():
     ).fetchone()
 
     if temperature is None:
-        return {'status': 'Please set a value for temperature'}, 200
+        return {'status': 'Please set a value for temperature'}
 
 
 
@@ -51,7 +51,7 @@ def get_status():
     ).fetchone()
 
     if mode is None:
-        return {'status': 'Please set a value for mode (auto, cool, dry, fan, heat, eco)'}, 200
+        return {'status': 'Please set a value for mode (auto, cool, dry, fan, heat, eco)'}
 
    
 
@@ -62,7 +62,7 @@ def get_status():
     ).fetchone()
 
     if fanSpeed is None:
-        return {'status': 'Please set a value for fan speed (low, medium, high)'}, 200
+        return {'status': 'Please set a value for fan speed (low, medium, high)'}
 
 
 
@@ -73,7 +73,7 @@ def get_status():
     ).fetchone()
 
     if healthScore is None:
-        return {'status': 'Please set a score for device health'}, 200
+        return {'status': 'Please set a score for device health'}
 
 
     cleaning = db.execute(

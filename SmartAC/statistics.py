@@ -1,14 +1,7 @@
-from tkinter import OFF
-from webbrowser import get
-from flask import Blueprint, request, jsonify, session
+from flask import session
 from database import get_db
-from auth import login_required
-
-bp = Blueprint('statistics', __name__)
 
 
-@bp.route('/statistics',methods=['GET'])
-@login_required
 def get_statistics():
     db = get_db()
     userId = session.get('user_id')
@@ -45,7 +38,6 @@ def get_statistics():
         ' ORDER BY modePreference DESC'
     ).fetchone()
 
-
     preference = db.execute(
         'SELECT author_id, preference_id, COUNT(*) AS preference'
         ' FROM schedule'
@@ -55,8 +47,7 @@ def get_statistics():
         (userId,)
     ).fetchone()
 
-    return jsonify({
-        'status': 'Statistics succesfully retrieved',
+    return {
         'statistics': {
             'temperature': temperature["avgValue"],
             'light': light['value'],
@@ -64,4 +55,4 @@ def get_statistics():
             'mode': mode['type'],
             'preference': preference["preference_id"]
         }
-    }), 200
+    }

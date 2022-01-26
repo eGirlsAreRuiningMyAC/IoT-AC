@@ -92,19 +92,21 @@ CREATE TABLE cleaning (
 CREATE TABLE light (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  value TEXT NOT NULL
+  value TEXT NOT NULL,
+  intensity INTEGER
 );
 
 CREATE TABLE sound (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  value TEXT NOT NULL
+  value TEXT NOT NULL,
+  volume INTEGER
 );
 
 
-INSERT INTO sound(value) VALUES ("ON");
+INSERT INTO sound(value, volume) VALUES ("ON", 50);
 
-INSERT INTO light(value) VALUES ("ON");
+INSERT INTO light(value, intensity) VALUES ("ON", 50);
 
 INSERT INTO powerStatus(value) VALUES ("ON");
 

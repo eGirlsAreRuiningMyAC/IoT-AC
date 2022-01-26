@@ -153,7 +153,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StatusResponse"
+                  "$ref": "#/components/schemas/StatusValueResponse"
                 }
               }
             }
@@ -177,7 +177,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StatusResponse"
+                  "$ref": "#/components/schemas/StatusValueResponse"
                 }
               }
             }
@@ -204,7 +204,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StatusResponse"
+                  "$ref": "#/components/schemas/StatusValueResponse"
                 }
               }
             }
@@ -228,7 +228,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StatusResponse"
+                  "$ref": "#/components/schemas/StatusValueResponse"
                 }
               }
             }
@@ -680,7 +680,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StatusValueResponse"
+                  "$ref": "#/components/schemas/LightResponse"
                 }
               }
             }
@@ -693,7 +693,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ValueRequest"
+                "$ref": "#/components/schemas/LightRequest"
               }
             }
           }
@@ -731,7 +731,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StatusValueResponse"
+                  "$ref": "#/components/schemas/SoundResponse"
                 }
               }
             }
@@ -744,7 +744,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ValueRequest"
+                "$ref": "#/components/schemas/SoundRequest"
               }
             }
           }
@@ -857,6 +857,34 @@
           }
         }
       },
+	  "SoundResponse":{
+		 "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+		  "volume": {
+            "type": "integer"
+          }
+        } 
+	  },
+	  "LightResponse":{
+		"type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+		  "intensity": {
+            "type": "integer"
+          }
+        } 
+	  },
       "ValueRequest": {
         "type": "object",
         "properties": {
@@ -865,6 +893,30 @@
           }
         }
       },
+	  "LightRequest":{
+		"type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+		  "intensity": {
+            "type": "integer"
+          },
+        }
+		  
+	  },
+	  "SoundRequest":{
+		"type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+		  "volume": {
+            "type": "integer"
+          },
+        }
+		  
+	  },
       "RegisterBody": {
         "type": "object",
         "properties": {
@@ -946,9 +998,6 @@
                 "type": "string"
               }
             }
-          },
-          "status": {
-            "type": "string"
           }
         }
       },
