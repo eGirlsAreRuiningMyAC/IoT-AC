@@ -130,6 +130,13 @@ def get_ac_light():
     return check["value"], check["intensity"]
 
 
+
+def set_ac_light_auto(intensity):
+    lightValue, lightIntensity = get_ac_light()
+    if lightValue == "ON" and get_ac_mode=="AUTO":
+        set_ac_light("ON", intensity)
+
+
 def set_ac_light(light, intensity):
     setTurnOn = light.upper() == "ON"
     currentLightValue, currentIntensity = get_ac_light()
@@ -160,6 +167,12 @@ def get_ac_sound():
         .fetchone()
     )
     return check["value"], check["volume"]
+
+
+def set_ac_sound_auto(volume):
+    soundValue, soundVolume = get_ac_sound()
+    if soundValue == "ON" and get_ac_mode == "AUTO":
+        set_ac_sound("ON", volume)
 
 
 def set_ac_sound(sound, volume):

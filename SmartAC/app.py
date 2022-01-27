@@ -17,6 +17,7 @@ import settings_api
 import preference_api
 import schedule_api
 import statistics_api
+import statistics
 
 from weather_api_publisher import run_weather_mqtt_client
 
@@ -93,8 +94,10 @@ def mqtt_publish_status_thread():
         time.sleep(30)
         with app.app_context():
             statusMessage = json.dumps(status.get_status(), default=str)
+            statisticsMessage = json.dumps(statistics.get_all_statistics(), default=str)
 
         mqtt.publish('smartAC/status', statusMessage)
+        mqtt.publish('smartAC/statistics', statisticsMessage)
     
     
 
@@ -107,8 +110,14 @@ def handle_mqtt_message(client, userdata, message):
     data = json.loads(data)
     with app.app_context():
         if topic == "smartAC/air":
-            environment.set_air_temperature(data["temp"])
+            airTemperature = data["temp"]
+            environment.set_air_temperature(airTemperature)
+            environment.update_temperature_auto(airTemperature)
             environment.set_air_humidity(data["humidity"])
+        if topic == "smartAC/light":
+            settings.set_ac_light_auto(data["intensity"])
+        if topic == "smartAC/sound":
+            settings.set_ac_sound_auto(data["volume"])
         if topic == "smartAC/health":
             settings.set_ac_health_score(data["health"])
 

@@ -7,4 +7,4 @@ bp = Blueprint('statistics', __name__)
 @bp.route('/statistics',methods=['GET'])
 @login_required
 def get_statistics():
-    return statistics.get_statistics(), 200
+    return statistics.get_statistics_current_user(), 200

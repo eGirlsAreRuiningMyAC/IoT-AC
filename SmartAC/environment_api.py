@@ -14,23 +14,7 @@ def set_air_temperature_api():
     if not airTemperature:
         return jsonify({'status': 'Air temperature is required.'}), 400
     value = env.set_air_temperature(airTemperature)
-
-    """
-    -> update temperature of AC if mode = auto
-    <0 : 27, 0 - 10: 25, 10-20: 23, 20-30: 21, 30+: 19
-    """
-    currentACMode = settings.get_ac_mode()
-    if currentACMode.upper() == "AUTO":
-        updatedACTemperature = 27
-        if airTemperature >0:
-            updatedACTemperature -=2
-        if airTemperature >10:
-            updatedACTemperature -=2
-        if airTemperature >20:
-            updatedACTemperature -=2
-        if airTemperature >30:
-            updatedACTemperature -=2
-        settings.set_ac_temperature(updatedACTemperature)
+    env.update_temperature_auto(airTemperature)
 
     return jsonify({
         'status': 'Air temperature succesfully recorded',

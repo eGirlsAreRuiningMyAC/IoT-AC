@@ -1,16 +1,29 @@
 from flask import session
 from database import get_db
 
+def get_all_statistics():
+    users = get_db().execute(
+        'SELECT id FROM user'
+    ).fetchall()
+    statisticsDict = dict()
+    for userId in users:
+        statisticsDict[userId] = get_statistics(userId)
+    return statisticsDict
 
-def get_statistics():
-    db = get_db()
+
+def get_statistics_current_user():
     userId = session.get('user_id')
+    get_statistics(userId)
 
+
+def get_statistics(userId):
     # preponderent light on sau off
     # preponderent sound on sau off
     # temperatura medie
     # cea mai utilizata preferinta a utilizatorului 
     # cel mai utilizat mod
+
+    db = get_db()
 
     temperature =db.execute(
         'SELECT AVG(value) AS avgValue'
