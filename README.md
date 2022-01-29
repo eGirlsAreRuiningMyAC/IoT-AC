@@ -34,7 +34,7 @@ Running steps:
   ```
   5. (Re)Initialize database:   
   ```
-    flask init-db
+    flask init_db
   ```
   6. Run project:   
   ```
