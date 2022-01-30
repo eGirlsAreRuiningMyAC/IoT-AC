@@ -1,10 +1,17 @@
 import pytest
 import json
-from unittest.mock import patch
-
+import os
 import sys
+import inspect
 
-sys.path.append("C:/Users/Bianca/Desktop/IS/IoT-AC/SmartAC")
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+
+# going up on the parent directory to reach the directory in which my_app.py is located
+parentdir = os.path.dirname(currentdir)
+parentdir1 = os.path.dirname(parentdir)
+parentdir2 = os.path.dirname((parentdir1))
+
+sys.path.insert(0, parentdir2)
 
 import my_app
 
@@ -38,39 +45,39 @@ def test_set_temperature_too_high(client):
         with c.session_transaction() as sess:
             sess['user_id'] = '1'
             sess['_fresh'] = True
-    payload = {"value" : 30}
-    json_ob = json.dumps(payload)
-    print(json_ob)
-    rv = c.post('/settings/temperature', data=json_ob)
-    res = json.loads(rv.data.decode())
-    assert rv.status_code == 400
-    assert res["status"] == "Temperature must be between 16 and 28"
+        payload = {"value" : 30}
+        json_ob = json.dumps(payload)
+        print(json_ob)
+        rv = c.post('/settings/temperature', data=json_ob)
+        res = json.loads(rv.data.decode())
+        assert rv.status_code == 400
+        assert res["status"] == "Temperature must be between 16 and 28"
 
 def test_set_temperature_success(client):
     with client as c:
         with c.session_transaction() as sess:
             sess['user_id'] = '1'
             sess['_fresh'] = True
-    payload = {"value" : 20}
-    json_ob = json.dumps(payload)
-    print(json_ob)
-    rv = c.post('/settings/temperature', data=json_ob)
-    res = json.loads(rv.data.decode())
-    assert rv.status_code == 200
-    assert res["status"] == "Temperature succesfully recorded"
+        payload = {"value" : 20}
+        json_ob = json.dumps(payload)
+        print(json_ob)
+        rv = c.post('/settings/temperature', data=json_ob)
+        res = json.loads(rv.data.decode())
+        assert rv.status_code == 200
+        assert res["status"] == "Temperature succesfully recorded"
 
 def test_set_temperature_null_input(client):
     with client as c:
         with c.session_transaction() as sess:
             sess['user_id'] = '1'
             sess['_fresh'] = True
-    payload = {"value" : None}
-    json_ob = json.dumps(payload)
-    print(json_ob)
-    rv = c.post('/settings/temperature', data=json_ob)
-    res = json.loads(rv.data.decode())
-    assert rv.status_code == 400
-    assert res["status"] == "Temperature is required."
+        payload = {"value" : None}
+        json_ob = json.dumps(payload)
+        print(json_ob)
+        rv = c.post('/settings/temperature', data=json_ob)
+        res = json.loads(rv.data.decode())
+        assert rv.status_code == 400
+        assert res["status"] == "Temperature is required."
 
 def test_get_temperature(client):
     res=client.get("/settings/temperature")

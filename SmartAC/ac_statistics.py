@@ -13,14 +13,14 @@ def get_all_statistics():
 
 def get_statistics_current_user():
     userId = session.get('user_id')
-    get_statistics(userId)
+    return get_statistics(userId)
 
 
 def get_statistics(userId):
     # preponderent light on sau off
     # preponderent sound on sau off
     # temperatura medie
-    # cea mai utilizata preferinta a utilizatorului 
+    # cea mai utilizata preferinta a utilizatorului
     # cel mai utilizat mod
 
     db = get_db()
@@ -60,12 +60,14 @@ def get_statistics(userId):
         (userId,)
     ).fetchone()
 
+    preferenceValue = None if (preference is None) else preference["preference_id"]
+
     return {
         'statistics': {
             'temperature': temperature["avgValue"],
             'light': light['value'],
             'sound': sound['value'],
             'mode': mode['type'],
-            'preference': preference["preference_id"]
+            'preference': preferenceValue
         }
     }

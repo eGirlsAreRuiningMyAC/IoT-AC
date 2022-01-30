@@ -17,7 +17,7 @@ import settings_api
 import preference_api
 import schedule_api
 import statistics_api
-import statistics
+import ac_statistics
 
 from weather_api_publisher import run_weather_mqtt_client
 
@@ -94,7 +94,7 @@ def mqtt_publish_status_thread():
         time.sleep(30)
         with app.app_context():
             statusMessage = json.dumps(status.get_status(), default=str)
-            statisticsMessage = json.dumps(statistics.get_all_statistics(), default=str)
+            statisticsMessage = json.dumps(ac_statistics.get_all_statistics(), default=str)
 
         mqtt.publish('smartAC/status', statusMessage)
         mqtt.publish('smartAC/statistics', statisticsMessage)
