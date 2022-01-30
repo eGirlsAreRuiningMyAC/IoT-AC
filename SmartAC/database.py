@@ -3,10 +3,16 @@ import click
 from flask import g
 from flask.cli import with_appcontext
 
+import os.path
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+db_path = os.path.join(BASE_DIR, "databaseSmartAC.db")
+
+
 def get_db():
     if 'db' not in g:
         g.db = sqlite3.connect(
-            'databaseSmartAC.db',
+            db_path,
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row
