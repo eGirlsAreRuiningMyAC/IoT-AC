@@ -2,7 +2,7 @@
 App for a smart Air Conditioning device that makes use of IoT  
 
 ## DOCS
-  - [Analysis document](docs/Document de analiză a cerințelor clientului.docx)
+  - [Analysis document](https://github.com/eGirlsAreRuiningMyAC/IoT-AC/blob/main/docs/Document%20de%20analiz%C4%83%20a%20cerin%C8%9Belor%20clientului.docx)
   - [OpenAPI spec file](docs/openapi.json)
   - [AsyncAPI spec file](docs/)
 
@@ -10,7 +10,7 @@ App for a smart Air Conditioning device that makes use of IoT
 
 Prerequisite: 
   - You should have python and pip installed.
-  - For message broker: install and run [Mosquitto](https://mosquitto.org/download/) (keep default configurations).
+  - For message broker: install and run [Mosquitto](https://mosquitto.org/download/) (keep default configurations).    
     If you get ConnectionRefusedError when running the app, run cmd as admin, cd to Mosquitto file and try:   
     ```
     net start mosquitto
