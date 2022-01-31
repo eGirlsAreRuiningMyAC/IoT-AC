@@ -2,16 +2,19 @@
 App for a smart Air Conditioning device that makes use of IoT  
 
 ## DOCS
-  - OpenAPI specification
-  - MQTT specification
-  - Documentation
-  - Analysis document
+  - [Analysis document](docs/Document de analiză a cerințelor clientului.docx)
+  - [OpenAPI spec file](docs/openapi.json)
+  - [AsyncAPI spec file](docs/)
 
 ## INSTALLATION
 
 Prerequisite: 
   - You should have python and pip installed.
   - For message broker: install and run [Mosquitto](https://mosquitto.org/download/) (keep default configurations).
+    If you get ConnectionRefusedError when running the app, run cmd as admin, cd to Mosquitto file and try:   
+    ```
+    net start mosquitto
+    ```
 
 
 Running steps:
@@ -38,7 +41,13 @@ Running steps:
   ```
   6. Run project:   
   ```
-    python app.py
+    python my_app.py
+  ```
+
+## TESTING   
+  ```
+  pytest test_http.py
+  pytest test_mqtt.py
   ```
 
 ## CREDITS
