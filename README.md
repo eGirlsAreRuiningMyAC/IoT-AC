@@ -4,7 +4,7 @@ App for a smart Air Conditioning device that makes use of IoT
 ## DOCS
   - [Analysis document](https://github.com/eGirlsAreRuiningMyAC/IoT-AC/blob/main/docs/Document%20de%20analiz%C4%83%20a%20cerin%C8%9Belor%20clientului.docx)
   - [OpenAPI spec file](docs/openapi.json)
-  - [AsyncAPI spec file](docs/)
+  - [AsyncAPI spec file](docs/asyncapi.yaml)
 
 ## INSTALLATION
 
