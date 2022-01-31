@@ -1,0 +1,181 @@
+asyncapi: 2.2.0
+info:
+  title: Smart AC AsyncAPI
+  version: 1.0.0
+servers:
+  development:
+    url: localhost:1883
+    protocol: mqtt
+defaultContentType: application/json
+channels:
+  smartAC/air:
+    subscribe:
+      summary: >-
+        Get the temperature and humidity of the outside air to be processed by
+        the device.
+      message:
+        $ref: '#/components/messages/airData'
+  smartAC/health:
+    subscribe:
+      summary: Get the health score of the device.
+      message:
+        $ref: '#/components/messages/healthScore'
+  smartAC/env/light:
+    subscribe:
+      summary: Get the intensity of the light from the environment.
+      message:
+        $ref: '#/components/messages/envData'
+  smartAC/env/sound:
+    subscribe:
+      summary: Get the intensity of the sound from the environment.
+      message:
+        $ref: '#/components/messages/envData'
+  smartAC/status:
+    publish:
+      summary: The status of the device is published here.
+      message:
+        $ref: '#/components/messages/status'
+  smartAC/statistics:
+    publish:
+      summary: Device usage statistics for all users are published here.
+      message:
+        $ref: '#/components/messages/statistics'
+  smartAC/cleaning/history:
+    publish:
+      summary: Maintenance / Cleaning history of the device is published here.
+      message:
+        $ref: '#/components/messages/cleaningHistory'
+components:
+  messages:
+    airData:
+      payload:
+        type: object
+        properties:
+          temp:
+            type: number
+            description: Air temperature
+          humidity:
+            type: number
+            description: Air humidity
+    healthScore:
+      payload:
+        type: object
+        properties:
+          value:
+            type: integer
+            minimum: 0
+            maximum: 10
+            description: Health score
+    envData:
+      payload:
+        type: object
+        properties:
+          value:
+            type: integer
+            minimum: 0
+            maximum: 100
+            description: Environment condition value
+    status:
+      payload:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              powerState:
+                type: string
+                enum:
+                  - 'ON'
+                  - 'OFF'
+              airHumidity:
+                type: number
+              airTemperature:
+                type: number
+              temperature:
+                type: number
+              mode:
+                type: string
+                enum:
+                  - AUTO
+                  - COOL
+                  - DRY
+                  - FAN
+                  - HEAT
+                  - ECO
+              fanSpeed:
+                type: string
+                enum:
+                  - LOW
+                  - MEDIUM
+                  - HIGH
+              healthScore:
+                type: integer
+              light:
+                type: string
+                enum:
+                  - 'ON'
+                  - 'OFF'
+              sound:
+                type: string
+                enum:
+                  - 'ON'
+                  - 'OFF'
+              cleaning:
+                type: object
+                properties:
+                  value:
+                    type: string
+                    enum:
+                      - START
+                      - STOP
+                  cleaning_date:
+                    type: string
+    statistics:
+      payload:
+        type: array
+        items:
+          $ref: '#/components/schemas/statisticsData'
+    cleaningHistory:
+      payload:
+        type: array
+        items:
+          $ref: '#/components/schemas/cleaningData'
+  schemas:
+    cleaningData:
+      type: object
+      properties:
+        cleaning_date:
+          type: string
+        value:
+          type: string
+          enum:
+            - START
+            - STOP
+    statisticsData:
+      type: object
+      properties:
+        userId:
+          type: integer
+        temperature:
+          type: number
+        mode:
+          type: string
+          enum:
+            - AUTO
+            - COOL
+            - DRY
+            - FAN
+            - HEAT
+            - ECO
+        preference:
+          type: integer
+        light:
+          type: string
+          enum:
+            - 'ON'
+            - 'OFF'
+        sound:
+          type: string
+          enum:
+            - 'ON'
+            - 'OFF'
