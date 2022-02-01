@@ -44,9 +44,15 @@ Running steps:
     python my_app.py
   ```
 
-## TESTING   
+## TESTING 
+  You can check all tests by using:   
   ```
-  pytest test_http.py
+  pytest
+  ```
+  Or each type of tests by adding the name of the file:   
+  ```
+  pytest test_http_unit.py   
+  pytest test_http_integration.py   
   pytest test_mqtt.py
   ```
 
