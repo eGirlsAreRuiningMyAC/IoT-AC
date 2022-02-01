@@ -48,7 +48,7 @@ def get_all_preferences_api():
     preferences = preference.get_all_preferences()
     return jsonify({
         'status': 'These are all your preferences',
-        'data': preferences
+        'preferences': preferences
         }), 200
 
 

@@ -243,7 +243,7 @@ def test_start_while_cleaning(client) :
     assert rv.status_code == 400
     assert res["status"] == "The device is currently being cleaned and cannot be turned on or off"
 
-    payload = {"cleaning": "STOP"}
+    payload = {"value": "STOP"}
     json_ob = json.dumps(payload)
     rv = client.post('/settings/cleaning', data=json_ob)
     res = json.loads(rv.data.decode())

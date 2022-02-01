@@ -401,7 +401,7 @@ def test_set_ac_sound_off_success(client):
 #---------------- TEST CLEANING ---------------------------------------------
 
 def test_set_ac_cleaning_wrong_value(client):
-    payload = {"cleaning" : "Yes"}
+    payload = {"value" : "Yes"}
     json_ob = json.dumps(payload)
     print(json_ob)
     rv = client.post('/settings/cleaning', data=json_ob)
@@ -410,7 +410,7 @@ def test_set_ac_cleaning_wrong_value(client):
     assert res["status"] == "Cleaning value must be START or STOP."
 
 def test_set_ac_cleaning_invalid(client):
-    payload = {"cleaning" : None}
+    payload = {"value" : None}
     json_ob = json.dumps(payload)
     print(json_ob)
     rv = client.post('/settings/cleaning', data=json_ob)
@@ -422,7 +422,7 @@ def test_set_ac_cleaning_start(client):
     res = client.get("/settings/cleaning")
     response_body = json.loads(res.data.decode())
     current= response_body["value"]
-    payload = {"cleaning" : "START"}
+    payload = {"value" : "START"}
     json_ob = json.dumps(payload)
     print(json_ob)
     rv = client.post('/settings/cleaning', data=json_ob)
@@ -437,7 +437,7 @@ def test_set_ac_cleaning_stop(client):
     res = client.get("/settings/cleaning")
     response_body = json.loads(res.data.decode())
     current = response_body["value"]
-    payload = {"cleaning" : "STOP"}
+    payload = {"value" : "STOP"}
     json_ob = json.dumps(payload)
     print(json_ob)
     rv = client.post('/settings/cleaning', data=json_ob)

@@ -4,3 +4,4 @@ Flask-MQTT==1.1.1
 Flask-SocketIO==5.1.1
 pytest==6.2.5
 requests==2.26.0
+Flask_Cors==3.0.10

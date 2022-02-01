@@ -40,7 +40,7 @@ def get_all_schedules_api():
     schedules = schedule.get_all_schedules()
     return jsonify({
         'status': 'These are all your schedules',
-        'data': schedules
+        'schedules': schedules
         }), 200
 
 @bp.route('/schedule', methods=['DELETE'])

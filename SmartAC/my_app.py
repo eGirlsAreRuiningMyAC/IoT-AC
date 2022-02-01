@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from threading import Thread
 from flask_mqtt import Mqtt
 from flask_socketio import SocketIO
+from flask_cors import CORS
 import eventlet
 import json
 import time
@@ -38,6 +39,7 @@ def create_app():
     app.config.from_mapping(
         SECRET_KEY='dev',
     )
+    CORS(app)
 
     database.init_app(app)
     app.register_blueprint(auth.bp)
@@ -142,7 +144,7 @@ def run_app():
     create_app()
     create_mqtt_app()
     create_mqtt_threads()
-    socketio.run(app, host='localhost', port=5000, use_reloader=False, debug=True)
+    socketio.run(app, host='127.0.0.1', port=5000, use_reloader=False, debug=True)
 
 if __name__ == '__main__':
     run_app()

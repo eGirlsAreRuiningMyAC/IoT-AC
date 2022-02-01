@@ -26,15 +26,16 @@ def get_all_preferences():
     if preferences is None:
         return None
 
-    preferencesDict = dict()
+    preferencesDict = []
     for preference in preferences:
-        preferencesDict[preference[0]]= {
+        preferencesDict.append({
+            "id": preference[0],
             "temperature":preference[1],
             "mode":preference[2],
             "fanSpeed":preference[3],
             "light":preference[4],
             "sound":preference[5]
-        }
+        })
 
     return preferencesDict
 

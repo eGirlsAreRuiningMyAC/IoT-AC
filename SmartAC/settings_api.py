@@ -1,5 +1,4 @@
 from flask import Blueprint, request, jsonify
-from auth import login_required
 import settings
 
 bp = Blueprint('settings', __name__, url_prefix='/settings')
@@ -228,7 +227,7 @@ def get_ac_cleaning_status_api():
 @bp.route('/cleaning', methods=['POST'])
 def set_ac_cleaning_status_api():
     json = request.get_json(force=True) 
-    cleaning = json['cleaning']
+    cleaning = json['value']
     if not cleaning:
         return jsonify({'status': 'Cleaning value is required.'}), 400
     if cleaning.upper() not in ["START", "STOP"]:

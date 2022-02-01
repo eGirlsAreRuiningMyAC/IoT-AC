@@ -26,13 +26,14 @@ def get_all_schedules():
     if schedules is None:
         return None
 
-    schedulesDict = dict()
+    schedulesDict = []
     for schedule in schedules:
-        schedulesDict[schedule[0]]= {
+        schedulesDict.append({
+            "scheduleId":schedule[0],
             "preferenceId":schedule[1],
             "turnOnTime":schedule[2],
             "turnOffTime":schedule[3]
-        }
+        })
 
     return schedulesDict
 
