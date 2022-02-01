@@ -83,9 +83,6 @@ def set_ac_health_score(intHealthScore):
     db = get_db()
     db.execute("INSERT INTO health (value) VALUES (?)", (intHealthScore,))
     db.commit()
-    if intHealthScore < 4:
-        set_ac_cleaning_status("START")
-        set_ac_power("OFF")
 
     check = db.execute(
         "SELECT id, timestamp, value FROM health ORDER BY timestamp DESC"
@@ -160,6 +157,20 @@ def set_ac_light(light, intensity):
             return jsonify({"status": "Light is now off"})
 
 
+def update_light_auto(envLightIntensity):
+    """
+    -> update AC light intensity based on env light intensity 
+        if mode = auto and light is ON
+    acLight = 100 - envLight
+    """
+    acLightIntensity = 100 - envLightIntensity
+    currentACMode = get_ac_mode()
+    lightValue, lightIntensity = get_ac_light()
+    if currentACMode.upper() == "AUTO" and lightValue.upper() == "ON":
+        set_ac_light("ON", acLightIntensity)
+
+
+
 def get_ac_sound():
     check = (
         get_db()
@@ -198,6 +209,18 @@ def set_ac_sound(sound, volume):
             return jsonify({"status": "Sound is now off"})
 
 
+def update_sound_auto(envSoundVolume):
+    """
+    -> update AC sound volume based on env sound volume 
+        if mode = auto and sound is ON
+    acSound = envSound
+    """
+    currentACMode = get_ac_mode()
+    soundValue, soundVolume = get_ac_sound()
+    if currentACMode.upper() == "AUTO" and soundValue.upper() == "ON":
+        set_ac_sound("ON", envSoundVolume)
+
+
 def get_ac_cleaning_status():
     check = (
         get_db()
@@ -209,6 +232,31 @@ def get_ac_cleaning_status():
     return check["value"]
 
 
+def get_cleaning_history():
+    cleanings = (
+        get_db()
+        .execute(
+            "SELECT id, cleaning_date, value FROM cleaning ORDER BY cleaning_date DESC"
+        )
+        .fetchall()
+    )
+
+    if cleanings is None:
+        return None
+
+    cleaningHistory = []
+    for cleaning in cleanings:
+        cleaningHistory.append({
+            "cleaning_date":cleaning[1],
+            "value":cleaning[2]
+        })
+
+    return cleaningHistory
+
+
+
+
+
 def set_ac_cleaning_status(cleaning):
     startCleaning = cleaning.upper() == "START"
     isInCleaning = get_ac_cleaning_status() == "START"
@@ -218,15 +266,18 @@ def set_ac_cleaning_status(cleaning):
         if startCleaning:
             return jsonify({"status": "The device is currently being cleaned."})
         else:
-            db.execute("INSERT INTO cleaning (value) VALUES (?)", (cleaning.upper(),))
-            db.commit()
             set_ac_health_score(10)
-            return jsonify({"status": "Cleaning value succesfully recorded"})
+            return set_ac_cleaning(cleaning.upper())
     else:
         if not startCleaning:
             return jsonify({"status": "The device is currently not being cleaned."})
         else:
-            db.execute("INSERT INTO cleaning (value) VALUES (?)", (cleaning.upper(),))
-            db.commit()
             set_ac_power("OFF")
-            return jsonify({"status": "Cleaning value succesfully recorded"})
+            return set_ac_cleaning(cleaning.upper())
+
+
+def set_ac_cleaning(cleaning):
+    db = get_db()
+    db.execute("INSERT INTO cleaning (value) VALUES (?)", (cleaning.upper(),))
+    db.commit()
+    return jsonify({"status": "Cleaning value succesfully recorded"})

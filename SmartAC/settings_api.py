@@ -108,6 +108,9 @@ def set_ac_health_score_api():
         return jsonify({'status': 'Health score must be integer between 1 and 10.'}), 400
 
     healthValue = settings.set_ac_health_score(intHealthScore)
+    if intHealthScore < 4:
+        settings.set_ac_cleaning_status("START")
+        settings.set_ac_power("OFF")
     return jsonify({
         'status': 'Health score succesfully recorded',
         'value': healthValue

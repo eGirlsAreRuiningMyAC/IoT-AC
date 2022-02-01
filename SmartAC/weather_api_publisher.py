@@ -6,7 +6,7 @@ import time
 broker = 'localhost'
 port = 1883
 topic = "smartAC/air"
-clientId = f'smartAC-mqtt-weatherApi'
+clientId = 'smartAC-mqtt-weatherApi'
 
 OPENWEATHER_KEY = "97012e2cdb78396cf133bce160eb9f14"
 OPENWEATHER_CITY_ID = 683503
@@ -29,7 +29,7 @@ def publish(client):
     while True:
         request = requests.get(url)
         data = request.json()
-        message = json.dumps(data["main"])
+        message = json.dumps({'temp': data["main"]["temp"], 'humidity': data["main"]["humidity"]})
         client.publish(topic, message)
         time.sleep(61)
 

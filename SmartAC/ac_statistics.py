@@ -5,9 +5,18 @@ def get_all_statistics():
     users = get_db().execute(
         'SELECT id FROM user'
     ).fetchall()
-    statisticsDict = dict()
-    for userId in users:
-        statisticsDict[userId] = get_statistics(userId)
+    statisticsDict = []
+    for user in users:
+        userId = user["id"]
+        stats = get_statistics(userId)["statistics"]
+        statisticsDict.append({
+            "userId": userId, 
+            'temperature': stats["temperature"],
+            'light': stats['light'],
+            'sound': stats['sound'],
+            'mode': stats['mode'],
+            'preference': stats["preference"]
+        })
     return statisticsDict
 
 

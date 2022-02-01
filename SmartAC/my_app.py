@@ -20,6 +20,7 @@ import statistics_api
 import ac_statistics
 
 from weather_api_publisher import run_weather_mqtt_client
+from mock_data_publisher import run_mock_data_mqtt_client
 
 eventlet.monkey_patch()
 
@@ -28,6 +29,7 @@ mqtt = Mqtt()
 socketio = None
 publishThread = None
 weatherApiThread = None
+mockDataThread = None
 
 
 def create_app():
@@ -62,13 +64,14 @@ def create_mqtt_app():
         mqtt.init_app(app)
         mqtt.subscribe('smartAC/air')
         mqtt.subscribe('smartAC/health')
+        mqtt.subscribe('smartAC/env/light')
+        mqtt.subscribe('smartAC/env/sound')
 
         global socketio 
         socketio = SocketIO(app, async_mode="eventlet")
     except:
         return jsonify({'status': 'Broker is not active'}), 403
-
-    create_mqtt_threads()
+    
 
     return mqtt
 
@@ -76,7 +79,7 @@ def create_mqtt_app():
 def create_mqtt_threads():
     global publishThread
     if publishThread is None:
-        publishThread = Thread(target = mqtt_publish_status_thread)
+        publishThread = Thread(target = mqtt_publish_thread)
         publishThread.daemon = True
         publishThread.start()
 
@@ -86,20 +89,28 @@ def create_mqtt_threads():
         weatherApiThread.daemon = True
         weatherApiThread.start()
 
+    
+    global mockDataThread
+    if mockDataThread is None:
+        mockDataThread = Thread(target = run_mock_data_mqtt_client)
+        mockDataThread.daemon = True
+        mockDataThread.start()
+
     return 'MQTT threads created'
 
 
-def mqtt_publish_status_thread():
+def mqtt_publish_thread():
     while True:
-        time.sleep(30)
         with app.app_context():
             statusMessage = json.dumps(status.get_status(), default=str)
             statisticsMessage = json.dumps(ac_statistics.get_all_statistics(), default=str)
+            cleaningHistory = json.dumps(settings.get_cleaning_history(), default=str)
 
         mqtt.publish('smartAC/status', statusMessage)
         mqtt.publish('smartAC/statistics', statisticsMessage)
-    
-    
+        mqtt.publish('smartAC/cleaning/history', cleaningHistory)
+        time.sleep(30)
+
 
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):
@@ -114,17 +125,23 @@ def handle_mqtt_message(client, userdata, message):
             environment.set_air_temperature(airTemperature)
             environment.update_temperature_auto(airTemperature)
             environment.set_air_humidity(data["humidity"])
-        if topic == "smartAC/light":
-            settings.set_ac_light_auto(data["intensity"])
-        if topic == "smartAC/sound":
-            settings.set_ac_sound_auto(data["volume"])
+        if topic == "smartAC/env/light":
+            settings.update_light_auto(int(data["value"]))
+        if topic == "smartAC/env/sound":
+            settings.update_sound_auto(int(data["value"]))
         if topic == "smartAC/health":
-            settings.set_ac_health_score(data["health"])
+            healthScore =  int(data["value"])
+            settings.set_ac_health_score(healthScore)
+            if healthScore < 4:
+                settings.set_ac_cleaning_status("START")
+            if healthScore == 10:
+                settings.set_ac_cleaning_status("STOP")
 
 
 def run_app():
     create_app()
     create_mqtt_app()
+    create_mqtt_threads()
     socketio.run(app, host='localhost', port=5000, use_reloader=False, debug=True)
 
 if __name__ == '__main__':
