@@ -6,7 +6,6 @@ bp = Blueprint('settings', __name__, url_prefix='/settings')
 
 
 @bp.route('/temperature', methods=['POST'])
-@login_required
 def set_ac_temperature_api():
     json = request.get_json(force=True) 
     temperature = json['value']
@@ -38,7 +37,6 @@ def get_ac_temperature_api():
 
 
 @bp.route('/mode', methods=['POST'])
-@login_required
 def set_ac_mode_api():
     json = request.get_json(force=True) 
     mode = json['value']
@@ -65,7 +63,6 @@ def get_ac_mode_api():
 
 
 @bp.route('/fanSpeed', methods=['POST'])
-@login_required
 def set_ac_fan_speed_api():
     json = request.get_json(force=True) 
     fanSpeed = json['value']
@@ -83,7 +80,7 @@ def set_ac_fan_speed_api():
 
 @bp.route('/fanSpeed', methods=['GET'])
 def get_ac_fan_speed_api():
-    fanSpeed = settings.get_ac_mode()
+    fanSpeed = settings.get_ac_fan_speed()
     return jsonify({
         'status': 'Fan speed succesfully retrieved',
         'value': fanSpeed
@@ -100,7 +97,6 @@ def get_ac_health_score_api():
 
 
 @bp.route('/health', methods=['POST'])
-@login_required
 def set_ac_health_score_api():
     json = request.get_json(force=True) 
     healthScore = json['value']
@@ -128,7 +124,6 @@ def get_ac_power_api():
 
 
 @bp.route('/power', methods=['POST'])
-@login_required
 def set_ac_power_api():
     cleaningValue = settings.get_ac_cleaning_status()
     if cleaningValue == 'START':
@@ -160,7 +155,6 @@ def get_ac_light_api():
 
 
 @bp.route('/light', methods=['POST'])
-@login_required
 def set_ac_light_api():
     currentLightValue, currentIntensity = settings.get_ac_light()
     json = request.get_json(force=True) 
@@ -195,7 +189,6 @@ def get_ac_sound_api():
 
 
 @bp.route('/sound', methods=['POST'])
-@login_required
 def set_ac_sound_api():
     currentSoundValue, currentVolume = settings.get_ac_sound()
     json = request.get_json(force=True) 
@@ -230,7 +223,6 @@ def get_ac_cleaning_status_api():
 
 
 @bp.route('/cleaning', methods=['POST'])
-@login_required
 def set_ac_cleaning_status_api():
     json = request.get_json(force=True) 
     cleaning = json['cleaning']

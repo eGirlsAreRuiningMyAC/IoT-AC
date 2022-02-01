@@ -7,7 +7,6 @@ bp = Blueprint('environment', __name__, url_prefix='/air')
 
 
 @bp.route('/temperature', methods=['POST'])
-@login_required
 def set_air_temperature_api():
     json = request.get_json(force=True) 
     airTemperature = json['value']
@@ -24,7 +23,6 @@ def set_air_temperature_api():
 
 
 @bp.route('/humidity', methods=['POST'])
-@login_required
 def set_air_humidity_api():
     json = request.get_json(force=True) 
     humidity = json['value']
