@@ -38,7 +38,7 @@ Because the health of a device should be monitored constantly, our app aims to e
 
 
 ## DOCS
-  - [Analysis document](https://github.com/eGirlsAreRuiningMyAC/IoT-AC/blob/main/docs/Document%20de%20analiz%C4%83%20a%20cerin%C8%9Belor%20clientului.docx)
+  - [Analysis document](https://github.com/eGirlsAreRuiningMyAC/IoT-AC/blob/main/docs/Document%20de%20analiz%C4%83%20a%20cerin%C8%9Belor%20clientului.pdf)
   - [OpenAPI spec file](docs/openapi.yaml)
   - [AsyncAPI spec file](docs/asyncapi.yaml)
 
