@@ -1,7 +1,7 @@
 # IoT-AC
 App for a smart Air Conditioning device that makes use of IoT  
 
-## Overview
+## OVERVIEW
 
 With this application, users can easily manipulate a smart Air Conditioning remotely, from the comfort of their personal devices.
 
