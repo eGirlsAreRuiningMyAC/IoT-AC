@@ -73,7 +73,7 @@ Running steps:
   ```
   5. (Re)Initialize database:   
   ```
-    flask init_db
+    flask init-db
   ```
   6. Run project:   
   ```
