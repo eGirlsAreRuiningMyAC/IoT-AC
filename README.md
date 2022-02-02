@@ -9,6 +9,10 @@ The app offers users the possibility to create their own profiles. An user has t
 
 Because the health of a device should be monitored constantly, our app aims to ensure that users are well informed about the quality of their smart device by providing statistics related to usage history across all user profiles, as well as the maintenance/cleaning history of the device.
 
+<img src="https://user-images.githubusercontent.com/62220895/152167712-22d45611-a430-4ff2-92e1-77b2ecb2a2bb.png" width="500">
+<img src="https://user-images.githubusercontent.com/62220895/152167783-64d75c12-a75f-472d-abfa-a065cf38c4e7.png" width="500">
+
+
 ## FEATURES
 
 - [x] User profiles (authentication)
@@ -25,10 +29,12 @@ Because the health of a device should be monitored constantly, our app aims to e
 - [x] Display cleaning history
 - [x] Self-cleaning mode - device goes into self-cleaning mode if self-assigned quality score falls under a certain threshold. all functions suspended until device is done cleaning
 
+
 ## FUTURE FEATURES
 
 - [ ] Optimal settings suggestions based on the weather forcast
 - [ ] Optimal settings recommendations based on usage history (with Machine Learning)
+
 
 
 ## DOCS
